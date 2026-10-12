@@ -1,0 +1,10 @@
+{% extends 'employees/base.html' %}
+{% block title %}Sign in{% endblock %}
+{% block auth_content %}
+<main class="login-page"><section class="login-panel"><a class="brand" href="{% url 'login' %}"><span class="brand-mark">P</span><span>People<span class="brand-light">Desk</span></span></a><div class="login-copy"><p class="eyebrow">EMPLOYEE OPERATIONS</p><h1>Good work<br>starts with<br><em>good people.</em></h1><p class="login-subtitle">A clear view of the people who move your organization forward.</p></div><p class="login-foot">PEOPLE DESK <span>·</span> PRIVATE WORKSPACE</p></section>
+<section class="login-form-side"><div class="login-form-wrap"><p class="eyebrow">YOUR WORKSPACE</p><h2>Welcome back</h2><p class="muted">Sign in to manage your employee records.</p>
+{% if form.errors %}<div class="alert error">Username or password is incorrect.</div>{% endif %}
+<form method="post" class="form-stack">{% csrf_token %}<input type="hidden" name="next" value="{{ next }}"><label for="id_username">Username</label><input id="id_username" name="username" type="text" autocomplete="username" required autofocus><label for="id_password">Password</label><input id="id_password" name="password" type="password" autocomplete="current-password" required><button class="button button-primary button-wide" type="submit">Sign in <span aria-hidden="true">→</span></button></form>
+<p class="muted register-prompt">New to People Desk? <a class="text-link" href="{% url 'register' %}">Create an account</a></p>
+</div></section></main>
+{% endblock %}

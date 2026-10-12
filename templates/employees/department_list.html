@@ -1,0 +1,6 @@
+{% extends 'employees/base.html' %}
+{% block title %}Departments{% endblock %}
+{% block content %}
+<section class="page-heading"><div><p class="eyebrow">TEAM STRUCTURE</p><h1>Departments</h1><p class="muted">Organize people into teams that make sense for your business.</p></div><a class="button button-primary" href="{% url 'department_create' %}"><span aria-hidden="true">＋</span> Add department</a></section>
+<div class="department-list">{% for department in departments %}<article class="department-row"><div class="department-symbol">▤</div><div class="department-info"><h2>{{ department.name }}</h2><p>{{ department.description|default:"No description" }}</p></div><span class="department-count">{{ department.employee_count }} employee{{ department.employee_count|pluralize }}</span><div class="row-actions"><a class="text-link" href="{% url 'department_update' department.pk %}">Edit</a><a class="text-link danger-text" href="{% url 'department_delete' department.pk %}">Delete</a></div></article>{% empty %}<div class="empty-state">No departments yet. Add a department before creating employee records.</div>{% endfor %}</div>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}People Desk{% endblock %} · People Desk</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <script src="{% static 'js/script.js' %}" defer></script>
+</head>
+<body>
+  {% if user.is_authenticated %}
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="{% url 'dashboard' %}"><span class="brand-mark">P</span><span>People<span class="brand-light">Desk</span></span></a>
+      <p class="nav-caption">WORKSPACE</p>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}is-active{% endif %}" href="{% url 'dashboard' %}"><span class="nav-icon">◫</span>Overview</a>
+        <a class="nav-link {% if 'employee' in request.resolver_match.url_name %}is-active{% endif %}" href="{% url 'employee_list' %}"><span class="nav-icon">♙</span>Employees</a>
+        <a class="nav-link {% if 'department' in request.resolver_match.url_name %}is-active{% endif %}" href="{% url 'department_list' %}"><span class="nav-icon">▤</span>Departments</a>
+      </nav>
+      <div class="sidebar-bottom"><div class="user-chip"><span class="avatar">{{ user.username|slice:":1"|upper }}</span><span class="user-meta"><strong>{{ user.get_full_name|default:user.username }}</strong><small>Administrator</small></span></div>
+        <form method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="signout" type="submit">Sign out <span aria-hidden="true">↗</span></button></form>
+      </div>
+    </aside>
+    <main class="main-content">
+      <header class="topbar"><span class="eyebrow">PEOPLE OPERATIONS</span><span class="topbar-date">{% now "l, F j, Y" %}</span></header>
+      {% if messages %}<div class="messages">{% for message in messages %}<div class="alert {{ message.tags }}">{{ message }}</div>{% endfor %}</div>{% endif %}
+      {% block content %}{% endblock %}
+      <footer class="footer">PEOPLE DESK <span>·</span> EMPLOYEE OPERATIONS</footer>
+    </main>
+  </div>
+  {% else %}{% block auth_content %}{% endblock %}{% endif %}
+</body>
+</html>

@@ -1,0 +1,104 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Validate Django employee project",
+			"type": "shell",
+			"command": "python manage.py check; if ($LASTEXITCODE -eq 0) { python manage.py makemigrations employees }; if ($LASTEXITCODE -eq 0) { python manage.py test }",
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Create MySQL database and validate",
+			"type": "shell",
+			"command": "python -c \"from dotenv import load_dotenv; import os, pymysql; load_dotenv(); conn=pymysql.connect(host=os.getenv('DB_HOST'), port=int(os.getenv('DB_PORT')), user=os.getenv('DB_USER'), password=os.getenv('DB_PASSWORD')); cursor=conn.cursor(); cursor.execute('CREATE DATABASE IF NOT EXISTS Employee_Information CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci'); conn.close()\"; if ($LASTEXITCODE -eq 0) { python manage.py migrate }; if ($LASTEXITCODE -eq 0) { python manage.py test }",
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Create Employee Information database",
+			"type": "shell",
+			"command": "python",
+			"args": [
+				"-c",
+				"from dotenv import load_dotenv; import os; import pymysql; load_dotenv(); connection = pymysql.connect(host=os.getenv('DB_HOST'), port=int(os.getenv('DB_PORT')), user=os.getenv('DB_USER'), password=os.getenv('DB_PASSWORD')); connection.cursor().execute('CREATE DATABASE IF NOT EXISTS Employee_Information CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci'); connection.close()"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Create Employee Information database retry",
+			"type": "shell",
+			"command": "python",
+			"args": [
+				"-c",
+				"from dotenv import load_dotenv; import os; import pymysql; load_dotenv(); connection = pymysql.connect(host=os.getenv(\"DB_HOST\"), port=int(os.getenv(\"DB_PORT\")), user=os.getenv(\"DB_USER\"), password=os.getenv(\"DB_PASSWORD\")); connection.cursor().execute(\"CREATE DATABASE IF NOT EXISTS Employee_Information CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci\"); connection.close()"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Provision and test Employee Information",
+			"type": "shell",
+			"command": "python scripts/create_database.py; if ($LASTEXITCODE -eq 0) { python manage.py migrate }; if ($LASTEXITCODE -eq 0) { python manage.py test }",
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Run Employee Management System",
+			"type": "shell",
+			"command": "python manage.py runserver 127.0.0.1:8000",
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "Test registration and authentication",
+			"type": "shell",
+			"command": "python manage.py test employees.tests",
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Verify simplified registration form",
+			"type": "shell",
+			"command": "python manage.py test employees.tests.EmployeeManagementTests.test_registration_creates_account_pending_approval",
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Verify simple username and password registration",
+			"type": "shell",
+			"command": "python manage.py test employees.tests.EmployeeManagementTests.test_registration_creates_account_pending_approval",
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Run full employee management tests",
+			"type": "shell",
+			"command": "python manage.py test employees.tests",
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Verify immediate signup and employee tests",
+			"type": "shell",
+			"command": "python manage.py test employees.tests",
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Apply department defaults and test",
+			"type": "shell",
+			"command": "python manage.py migrate; if ($LASTEXITCODE -eq 0) { python manage.py test employees.tests }",
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Check wildcard host configuration",
+			"type": "shell",
+			"command": "python manage.py check",
+			"isBackground": false,
+			"problemMatcher": []
+		}
+	]
+}

@@ -1,0 +1,5 @@
+{% extends 'employees/base.html' %}
+{% block title %}Delete {{ object_type }}{% endblock %}
+{% block content %}
+<section class="confirm-panel"><span class="confirm-mark">!</span><p class="eyebrow">CONFIRM DELETION</p><h1>Delete this {{ object_type }}?</h1><p class="muted">{% if employee %}This will permanently remove <strong>{{ employee.first_name }} {{ employee.last_name }}</strong> and their record.{% else %}This will permanently remove the <strong>{{ department.name }}</strong> department.{% endif %} This action cannot be undone.</p><form method="post">{% csrf_token %}<a class="button button-secondary" href="{% if employee %}{% url 'employee_detail' employee.pk %}{% else %}{% url 'department_list' %}{% endif %}">Cancel</a><button class="button button-danger" type="submit">Delete {{ object_type }}</button></form></section>
+{% endblock %}
